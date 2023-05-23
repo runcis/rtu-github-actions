@@ -22,7 +22,7 @@ runs:
       run: |
         $processExists = pm2 list | Select-String -Pattern "greetings-app-${{ inputs.environment }}"
         if ($processExists) {
-          pm2 delete "greetings-app-DEV"
+          pm2 delete "greetings-app-${{ inputs.environment }}"
         }
         $true
       shell: powershell
@@ -30,6 +30,6 @@ runs:
     - name: Start Service
       working-directory: python-greetings
       run: |
-        pm2 start -n "greetings-app-${{ inputs.environment }}" --port ${{ inputs.port }}
+        pm2 start -n "greetings-app-${{ inputs.environment }}" -- --port ${{ inputs.port }}
         Write-Host "Started greetings-app-${{ inputs.environment }} service."
       shell: powershell
