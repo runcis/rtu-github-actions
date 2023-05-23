@@ -16,12 +16,17 @@ runs:
         path: python-greetings
 
     - name: Stop Existing Service
-      run:  pm2 delete "books-${{ inputs.environment }}"; if ($LASTEXITCODE -eq 100) { $true }
+      run: |
+        $processExists = pm2 jlist | ConvertFrom-Json | Where-Object { $_.name -eq "books-DEV" }
+        if ($processExists) {
+          pm2 delete "books-DEV"
+        }
+        $true
       shell: powershell
 
     - name: Start Service
       working-directory: python-greetings
       run: |
         run : pm2 start -n "books-${{ inputs.environment }}" index.js -- ${{ inputs.port }}
-        Write-Host "Started greetings-app-${{ inputs.environment }} service."
+        Write-Host "Started books-${{ inputs.environment }} service."
       shell: powershell
