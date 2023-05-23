@@ -20,27 +20,26 @@ jobs:
           cd python-greetings
           pip3 install -r requirements.txt
 
-  deploy-and-test:
+  deploy-to-dev:
     runs-on: self-hosted
-    needs: [install-pip-deps]
-    strategy:
-      matrix:
-        environment: ['dev', 'staging', 'preprod', 'prod']
     steps:
       - name: Checkout Delivery Pipeline
       - uses: actions/checkout@v3.5.2
 
-      - name: Composite Action: Deploy to ${{ matrix.environment }}
+      - name: Composite Action: Deploy Dev
       - uses: ./.github/actions/deploy-action
         with:
-          environment: ${{ matrix.environment }}
+          environment:  'DEV'
 
-      - name: Composite Action: Test ${{ matrix.environment }}
+
+  test-on-dev:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Test Delivery Pipeline
+      - uses: actions/checkout@v3.5.2
+
+      - name: Composite Action: Test Dev
       - uses: ./.github/actions/test-action
         with:
-          environment: ${{ matrix.environment }}
-
-      - name: Composite Action: Install Dependencies
-      - uses: ./.github/actions/install-deps-action
-        with:
-          environment: ${{ matrix.environment }}
+          environment: 'DEV'
+  
