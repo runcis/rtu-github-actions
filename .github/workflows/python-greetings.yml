@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3.5.2
       - uses: ./.github/actions/build
         with:
-          environment: DEV
+          environment: 'DEV'
   deploy-dev:
     runs-on: self-hosted
     needs: [build]
@@ -24,7 +24,7 @@ jobs:
       - id: deployToDev
         uses: ./.github/actions/deploy
         with:
-          environment: DEV
+          environment: 'DEV'
   test-dev:
     runs-on: self-hosted
     needs: [deploy-dev]
@@ -33,7 +33,7 @@ jobs:
       - id: testOnDev
         uses: ./.github/actions/deploy
         with:
-          environment: DEV
+          environment: 'DEV'
   deploy-stg:
     runs-on: self-hosted
     needs: [test-dev]
@@ -43,7 +43,7 @@ jobs:
       - id: deployToStg
         uses: ./.github/actions/deploy
         with:
-          environment: STG
+          environment: 'STG'
   test-stg:
     runs-on: self-hosted
     needs: [deploy-stg]
@@ -52,17 +52,17 @@ jobs:
       - id: testOnStg
         uses: ./.github/actions/deploy
         with:
-          environment: STG
+          environment: 'STG'
   deploy-prd:
     runs-on: self-hosted
     needs: [test-stg]
-    name: Deploy to STG
+    name: Deploy to 'STG'
     steps:
       - uses: actions/checkout@v3.5.2
       - id: deployToStg
         uses: ./.github/actions/deploy
         with:
-          environment: PRD
+          environment: 'PRD'
   test-prd:
     runs-on: self-hosted
     needs: [deploy-prd]
@@ -71,7 +71,7 @@ jobs:
       - id: testOnPrd
         uses: ./.github/actions/deploy
         with:
-          environment: PRD
+          environment: 'PRD'
 
 
   # install-pip-deps:
