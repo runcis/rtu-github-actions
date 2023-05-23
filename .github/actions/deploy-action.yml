@@ -16,10 +16,10 @@ runs:
         path: python-greetings
 
     - name: Stop Existing Service
-      run: pm2 delete greetings-app-${{ inputs.environment }} & set "errorlevel=0" || pm2 delete greetings-app-${{ inputs.environment }} & EXIT /B 0
+      run:  pm2 delete greetings-app-${{ inputs.environment }} & EXIT /B 0
 
     - name: Start Service
       working-directory: python-greetings
       run: |
-        pm2 start app.py --name greetings-app-${{ inputs.environment }} -- --port ${{ inputs.environment == 'dev' && 7001 || inputs.environment == 'staging' && 7002 || inputs.environment == 'preprod' && 7003 || 7004 }}
+        run : pm2 start -n "books-${{ inputs.environment }}" index.js -- ${{ inputs.port }}
         echo "Started greetings-app-${{ inputs.environment }} service."

@@ -12,15 +12,19 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Building of node application is starting..
+      - uses: ./.github/actions/install-deps-action
+        with:
+          environment: DEV
   deploy-dev:
     runs-on: self-hosted
     needs: [build]
+    name: Deploy to Dev
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Deployment to DEV has started..
+      - id: deployToDev
+        uses: ./.github/actions/deploy-action
+        with:
+          environment: DEV
   test-dev:
     runs-on: self-hosted
     needs: [deploy-dev]
