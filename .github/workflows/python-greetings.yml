@@ -36,7 +36,7 @@ jobs:
           environment: DEV
   deploy-stg:
     runs-on: self-hosted
-    needs: [test-dev:]
+    needs: [test-dev]
     name: Deploy to STG
     steps:
       - uses: actions/checkout@v3.5.2
@@ -55,7 +55,7 @@ jobs:
           environment: STG
   deploy-prd:
     runs-on: self-hosted
-    needs: [test-stg:]
+    needs: [test-stg]
     name: Deploy to STG
     steps:
       - uses: actions/checkout@v3.5.2
