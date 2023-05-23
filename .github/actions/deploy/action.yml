@@ -23,5 +23,5 @@ runs:
       working-directory: python-greetings
       run: |
         run : pm2 start -n "books-${{ inputs.environment }}" index.js -- ${{ inputs.port }}
-        echo "Started greetings-app-${{ inputs.environment }} service."
+        Write-Host "Started greetings-app-${{ inputs.environment }} service."
       shell: pwsh
