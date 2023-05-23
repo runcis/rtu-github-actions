@@ -23,4 +23,4 @@ runs:
       run: |
         pip3 install -r requirements.txt
         Write-Host "Installed dependencies for ${{ inputs.environment }} environment."
-      shell: pwsh
+      shell: powershell
