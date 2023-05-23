@@ -1,20 +1,15 @@
 {
-  "name": "rtu-github-actions",
+  "name": "simple-node-app",
   "version": "1.0.0",
-  "description": "RTU Github action project",
+  "description": "A really simple Node.js application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "jest --forceExit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/runcis/rtu-github-actions.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/runcis/rtu-github-actions/issues"
-  },
-  "homepage": "https://github.com/runcis/rtu-github-actions#readme"
+  "dependencies": {
+    "express": "^4.17.1",
+    "supertest": "6.3.3",
+    "jest": "29.5.0"
+  }
 }
