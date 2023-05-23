@@ -30,36 +30,48 @@ jobs:
     needs: [deploy-dev]
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Testing BOOKS test set on DEV has started..
+      - id: testOnDev
+        uses: ./.github/actions/deploy
+        with:
+          environment: DEV
   deploy-stg:
     runs-on: self-hosted
-    needs: [test-dev]
+    needs: [test-dev:]
+    name: Deploy to STG
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Deployment to STG has started..
+      - id: deployToStg
+        uses: ./.github/actions/deploy
+        with:
+          environment: STG
   test-stg:
     runs-on: self-hosted
     needs: [deploy-stg]
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Testing BOOKS test set on STG has started..
+      - id: testOnStg
+        uses: ./.github/actions/deploy
+        with:
+          environment: STG
   deploy-prd:
     runs-on: self-hosted
-    needs: [test-stg]
+    needs: [test-stg:]
+    name: Deploy to STG
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Deployment to PRD has started..
+      - id: deployToStg
+        uses: ./.github/actions/deploy
+        with:
+          environment: PRD
   test-prd:
     runs-on: self-hosted
     needs: [deploy-prd]
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print output
-        run: echo Testing BOOKS test set on PRD has started..
+      - id: testOnPrd
+        uses: ./.github/actions/deploy
+        with:
+          environment: PRD
 
 
   # install-pip-deps:

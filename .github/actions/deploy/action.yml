@@ -16,7 +16,9 @@ runs:
         path: python-greetings
 
     - name: Stop Existing Service
-      run:  pm2 delete greetings-app-${{ inputs.environment }} & EXIT /B 0
+      run:  |
+        pm2 delete greetings-app-${{ inputs.environment }}
+        EXIT /B 0
       shell: powershell
 
     - name: Start Service
