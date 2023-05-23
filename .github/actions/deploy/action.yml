@@ -27,6 +27,6 @@ runs:
     - name: Start Service
       working-directory: python-greetings
       run: |
-        run : pm2 start -n "books-${{ inputs.environment }}" index.js -- ${{ inputs.port }}
+        pm2 start -n "books-${{ inputs.environment }}" index.js -- ${{ inputs.port }}
         Write-Host "Started books-${{ inputs.environment }} service."
       shell: powershell
