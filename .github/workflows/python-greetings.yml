@@ -8,51 +8,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  hello:
+
+  install-pip-deps:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Print greeting
-        run: echo Hello, world!
-  node-version:
-    runs-on: npm
+      - name: Checkout Delivery Pipeline
+      -  uses: actions/checkout@v3.5.2
+        with:
+          repository: mtararujs/python-greetings
+          path: python-greetings
+
+      - name: Install Dependencies
+        working-directory: python-greetings
+        run: |
+          echo "Installing all required dependencies..."
+          pip3 install -r requirements.txt
+
+  deploy-to-dev:
+    runs-on: self-hosted
+    needs: [install-pip-deps]
     steps:
-      - uses: actions/checkout@v3.5.2
-      - name: Check node version
-        run: node --version
-
-# jobs:
-#   install-pip-deps:
-#     runs-on: self-hosted
-#     steps:
-#       - name: Checkout Delivery Pipeline
-#       - uses: actions/checkout@v3.5.2
-
-#       - name: Install Dependencies
-#         run: |
-#           echo "Installing all required dependencies..."
-#           cd python-greetings
-#           pip3 install -r requirements.txt
-
-#   deploy-to-dev:
-#     runs-on: self-hosted
-#     steps:
-#       - name: Checkout Delivery Pipeline
-#       - uses: actions/checkout@v3.5.2
-
-#       - name: Composite Action: Deploy Dev
-#       - uses: ./.github/actions/deploy-action
-#         with:
-#           environment:  'DEV'
-
-
-#   test-on-dev:
-#     runs-on: self-hosted
-#     steps:
-#       - name: Checkout Test Delivery Pipeline
-#       - uses: actions/checkout@v3.5.2
-
-#       - name: Composite Action: Test Dev
-#       - uses: ./.github/actions/test-action
-#         with:
-#           environment: 'DEV'
+      - name: Composite Action Deploy Dev
+      - uses: ./.github/actions/deploy-action
+        with:
+          environment:  'DEV'
