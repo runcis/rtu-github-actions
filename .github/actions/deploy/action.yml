@@ -16,9 +16,7 @@ runs:
         path: python-greetings
 
     - name: Stop Existing Service
-      run:  |
-        pm2 delete greetings-app-${{ inputs.environment }}
-        EXIT /B 0
+      run:  pm2 delete "books-${{ inputs.environment }}"; if ($LASTEXITCODE -eq 100) { $true }
       shell: powershell
 
     - name: Start Service
