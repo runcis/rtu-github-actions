@@ -1,0 +1,27 @@
+name: Test Action
+description: Composite action to run tests for the specified environment
+
+inputs:
+  environment:
+    description: 'Environment to run tests on'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Delivery Pipeline
+      uses: actions/checkout@v3.5.2
+
+    - name: Clone course-js-api-framework Repository
+      uses: actions/checkout@v3.5.2
+      with:
+        repository: mtararujs/course-js-api-framework
+        path: course-js-api-framework
+
+    - name: Install Test Dependencies
+      working-directory: course-js-api-framework
+      run: npm install
+
+    - name: Run Tests
+      working-directory: course-js-api-framework
+      run: npm run greetings greetings_${{ inputs.environment }}

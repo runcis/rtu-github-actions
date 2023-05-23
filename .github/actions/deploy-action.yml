@@ -1,0 +1,28 @@
+name: Deploy Action
+description: Composite action to deploy the application to the specified environment
+
+inputs:
+  environment:
+    description: 'Environment to deploy the application to'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Delivery Pipeline
+      uses: actions/checkout@v3.5.2
+
+    - name: Clone python-greetings Repository
+      uses: actions/checkout@v3.5.2
+      with:
+        repository: mtararujs/python-greetings
+        path: python-greetings
+
+    - name: Stop Existing Service
+      run: pm2 delete greetings-app-${{ inputs.environment }} & set "errorlevel=0" || pm2 delete greetings-app-${{ inputs.environment }} & EXIT /B 0
+
+    - name: Start Service
+      working-directory: python-greetings
+      run: |
+        pm2 start app.py --name greetings-app-${{ inputs.environment }} -- --port ${{ inputs.environment == 'dev' && 7001 || inputs.environment == 'staging' && 7002 || inputs.environment == 'preprod' && 7003 || 7004 }}
+        echo "Started greetings-app-${{ inputs.environment }} service."

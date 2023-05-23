@@ -1,0 +1,46 @@
+name: Sample Book App
+
+on:
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  install-pip-deps:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Delivery Pipeline
+        uses: actions/checkout@v3.5.2
+
+      - name: Install Dependencies
+        run: |
+          echo "Installing all required dependencies..."
+          cd python-greetings
+          pip3 install -r requirements.txt
+
+  deploy-and-test:
+    runs-on: self-hosted
+    needs: [install-pip-deps]
+    strategy:
+      matrix:
+        environment: ['dev', 'staging', 'preprod', 'prod']
+    steps:
+      - name: Checkout Delivery Pipeline
+        uses: actions/checkout@v3.5.2
+
+      - name: Composite Action: Deploy to ${{ matrix.environment }}
+        uses: ./.github/actions/deploy-action
+        with:
+          environment: ${{ matrix.environment }}
+
+      - name: Composite Action: Test ${{ matrix.environment }}
+        uses: ./.github/actions/test-action
+        with:
+          environment: ${{ matrix.environment }}
+
+      - name: Composite Action: Install Dependencies
+        uses: ./.github/actions/install-deps-action
+        with:
+          environment: ${{ matrix.environment }}
