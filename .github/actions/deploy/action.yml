@@ -17,7 +17,7 @@ runs:
 
     - name: Stop Existing Service
       run: |
-        $processExists = pm2 jlist | ConvertFrom-Json | Where-Object { $_.name -eq "books-DEV" }
+        $processExists = pm2 list | Select-String -Pattern "books-DEV"
         if ($processExists) {
           pm2 delete "books-DEV"
         }
