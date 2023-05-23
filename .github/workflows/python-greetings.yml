@@ -25,6 +25,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: 'DEV'
+          port: 8001
   test-dev:
     runs-on: self-hosted
     needs: [deploy-dev]
@@ -34,6 +35,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: 'DEV'
+          port: 8001
   deploy-stg:
     runs-on: self-hosted
     needs: [test-dev]
@@ -44,6 +46,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: 'STG'
+          port: 8002
   test-stg:
     runs-on: self-hosted
     needs: [deploy-stg]
@@ -53,6 +56,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: 'STG'
+          port: 8002
   deploy-prd:
     runs-on: self-hosted
     needs: [test-stg]
@@ -63,6 +67,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: 'PRD'
+          port: 8003
   test-prd:
     runs-on: self-hosted
     needs: [deploy-prd]
@@ -72,29 +77,4 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: 'PRD'
-
-
-  # install-pip-deps:
-  #   runs-on: self-hosted
-  #   steps:
-  #     - uses: actions/checkout@v3.5.2
-  #     - name: Checkout Delivery Pipeline
-  #       with:
-  #         repository: mtararujs/python-greetings
-  #         path: python-greetings
-      
-  #     - uses: actions/checkout@v3.5.2
-  #     - name: Install Dependencies
-  #       working-directory: python-greetings
-  #       run: |
-  #         echo "Installing all required dependencies..."
-  #         pip3 install -r requirements.txt
-
-  # deploy-to-dev:
-  #   runs-on: self-hosted
-  #   needs: [install-pip-deps]
-  #   steps:
-  #     - name: Composite Action Deploy Dev
-  #     - uses: ./.github/actions/deploy-action
-  #       with:
-  #         environment:  'DEV'
+          port: 8003

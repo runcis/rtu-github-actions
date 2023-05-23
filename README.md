@@ -1,1 +1,3 @@
-"# rtu-github-actions" 
+RTU Github action project
+
+by: Rinalds Daniels Pikse

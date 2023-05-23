@@ -5,6 +5,9 @@ inputs:
   environment:
     description: 'Environment to deploy the application to'
     required: true
+  port:
+    description: 'Port to deploy the application to'
+    required: true
 
 runs:
   using: "composite"
@@ -17,9 +20,9 @@ runs:
 
     - name: Stop Existing Service
       run: |
-        $processExists = pm2 list | Select-String -Pattern "books-DEV"
+        $processExists = pm2 list | Select-String -Pattern "greetings-app-${{ inputs.environment }}"
         if ($processExists) {
-          pm2 delete "books-DEV"
+          pm2 delete "greetings-app-DEV"
         }
         $true
       shell: powershell
@@ -27,6 +30,6 @@ runs:
     - name: Start Service
       working-directory: python-greetings
       run: |
-        pm2 start -n "books-${{ inputs.environment }}" index.js -- ${{ inputs.port }}
-        Write-Host "Started books-${{ inputs.environment }} service."
+        pm2 start -n "greetings-app-${{ inputs.environment }}" --port ${{ inputs.port }}
+        Write-Host "Started greetings-app-${{ inputs.environment }} service."
       shell: powershell
