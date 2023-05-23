@@ -8,28 +8,77 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  install-pip-deps:
+  build:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3.5.2
-      - name: Checkout Delivery Pipeline
-        with:
-          repository: mtararujs/python-greetings
-          path: python-greetings
+      - name: Print output
+        run: echo Building of node application is starting..
+  deploy-dev:
+    runs-on: self-hosted
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Print output
+        run: echo Deployment to DEV has started..
+  test-dev:
+    runs-on: self-hosted
+    needs: [deploy-dev]
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Print output
+        run: echo Testing BOOKS test set on DEV has started..
+  deploy-stg:
+    runs-on: self-hosted
+    needs: [test-dev]
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Print output
+        run: echo Deployment to STG has started..
+  test-stg:
+    runs-on: self-hosted
+    needs: [deploy-stg]
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Print output
+        run: echo Testing BOOKS test set on STG has started..
+  deploy-prd:
+    runs-on: self-hosted
+    needs: [test-stg]
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Print output
+        run: echo Deployment to PRD has started..
+  test-prd:
+    runs-on: self-hosted
+    needs: [deploy-prd]
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Print output
+        run: echo Testing BOOKS test set on PRD has started..
+
+
+  # install-pip-deps:
+  #   runs-on: self-hosted
+  #   steps:
+  #     - uses: actions/checkout@v3.5.2
+  #     - name: Checkout Delivery Pipeline
+  #       with:
+  #         repository: mtararujs/python-greetings
+  #         path: python-greetings
       
-      - uses: actions/checkout@v3.5.2
-      - name: Install Dependencies
-        working-directory: python-greetings
-        run: |
-          echo "Installing all required dependencies..."
-          pip3 install -r requirements.txt
+  #     - uses: actions/checkout@v3.5.2
+  #     - name: Install Dependencies
+  #       working-directory: python-greetings
+  #       run: |
+  #         echo "Installing all required dependencies..."
+  #         pip3 install -r requirements.txt
 
-  deploy-to-dev:
-    runs-on: self-hosted
-    needs: [install-pip-deps]
-    steps:
-      - name: Composite Action Deploy Dev
-      - uses: ./.github/actions/deploy-action
-        with:
-          environment:  'DEV'
+  # deploy-to-dev:
+  #   runs-on: self-hosted
+  #   needs: [install-pip-deps]
+  #   steps:
+  #     - name: Composite Action Deploy Dev
+  #     - uses: ./.github/actions/deploy-action
+  #       with:
+  #         environment:  'DEV'
