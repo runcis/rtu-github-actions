@@ -29,6 +29,7 @@ jobs:
   test-dev:
     runs-on: self-hosted
     needs: [deploy-dev]
+    name: Test on Dev
     steps:
       - uses: actions/checkout@v3.5.2
         with:
@@ -39,7 +40,7 @@ jobs:
   deploy-stg:
     runs-on: self-hosted
     needs: [test-dev]
-    name: Deploy to STG
+    name: Deploy to staging
     steps:
       - uses: actions/checkout@v3.5.2
         with:
@@ -51,6 +52,7 @@ jobs:
   test-stg:
     runs-on: self-hosted
     needs: [deploy-stg]
+    name: Test on staging
     steps:
       - uses: actions/checkout@v3.5.2
         with:
@@ -61,7 +63,7 @@ jobs:
   deploy-pre-prd:
     runs-on: self-hosted
     needs: [test-stg]
-    name: Deploy to 'STG'
+    name: Deploy to pre prod
     steps:
       - uses: actions/checkout@v3.5.2
         with:
@@ -73,6 +75,7 @@ jobs:
   test-pre-prd:
     runs-on: self-hosted
     needs: [deploy-pre-prd]
+    name: Test on preprod
     steps:
       - uses: actions/checkout@v3.5.2
         with:
@@ -84,7 +87,7 @@ jobs:
   deploy-prd:
     runs-on: self-hosted
     needs: [test-pre-prd]
-    name: Deploy to 'STG'
+    name: Deploy to production
     steps:
       - uses: actions/checkout@v3.5.2
         with:
