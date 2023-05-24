@@ -29,6 +29,6 @@ runs:
     - name: Run Tests
       working-directory: js-api-tests
       run: |
-       run greetings greetings_${{ inputs.environment }}
-       dir
+        dir
+        npm run greetings greetings_${{ inputs.environment }}
       shell: powershell
