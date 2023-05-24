@@ -9,8 +9,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout Delivery Pipeline
-      uses: actions/checkout@v3.5.2
+    - name: Installing pip dependencies
+      run: echo "Installing all required pip dependencies.."
+      shell: powershell
+
 
     - name: Clone python-greetings Repository
       uses: actions/checkout@v3.5.2
