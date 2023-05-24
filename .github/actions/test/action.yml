@@ -8,22 +8,25 @@ inputs:
 
 runs:
   using: "composite"
-  steps:
-    - name: Checkout Delivery Pipeline
-      uses: actions/checkout@v3.5.2
+
+  steps: 
+    - name: Testing start
+      run: echo "Testing on ${{ inputs.environment }} has started.."
+      shell: powershell
 
     - name: Clone course-js-api-framework Repository
       uses: actions/checkout@v3.5.2
       with:
         repository: mtararujs/course-js-api-framework
-        path: course-js-api-framework
+        path: js-api-tests
+        clean: false
 
     - name: Install Test Dependencies
-      working-directory: course-js-api-framework
+      working-directory: js-api-tests
       run: npm install
       shell: powershell
 
     - name: Run Tests
-      working-directory: course-js-api-framework
+      working-directory: js-api-tests
       run: npm run greetings greetings_${{ inputs.environment }}
       shell: powershell

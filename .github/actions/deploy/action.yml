@@ -19,17 +19,17 @@ runs:
         path: python-greetings
 
     - name: Stop Existing Service
+      working-directory: python-greetings
       run: |
-        $processExists = pm2 list | Select-String -Pattern "greetings-app-${{ inputs.environment }}"
-        if ($processExists) {
-          pm2 delete "greetings-app-${{ inputs.environment }}"
-        }
-        $true
+        echo "Deployment to ${{ inputs.environment }} has started..."
+        pm2 delete greetings-app-${{ inputs.environment }}; 
+        exit 0
       shell: powershell
 
     - name: Start Service
+      working-directory: python-greetings
       run: |
         dir
-        pm2 start -n "greetings-app-${{ inputs.environment }}" -- -- --port ${{ inputs.port }}
+        pm2 start -n greetings-app-${{ inputs.environment }} app.py -- -- --port ${{ inputs.port }}
         Write-Host "Started greetings-app-${{ inputs.environment }} service."
       shell: powershell

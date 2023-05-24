@@ -13,68 +13,93 @@ jobs:
     steps:
       - uses: actions/checkout@v3.5.2
       - uses: ./.github/actions/build
-        with:
-          environment: 'DEV'
+
   deploy-dev:
     runs-on: self-hosted
     needs: [build]
     name: Deploy to Dev
     steps:
       - uses: actions/checkout@v3.5.2
-      - id: deployToDev
-        uses: ./.github/actions/deploy
         with:
-          environment: 'DEV'
+          clean: false
+      - uses: ./.github/actions/deploy
+        with:
+          environment: dev
           port: 8001
   test-dev:
     runs-on: self-hosted
     needs: [deploy-dev]
     steps:
       - uses: actions/checkout@v3.5.2
-      - id: testOnDev
-        uses: ./.github/actions/deploy
         with:
-          environment: 'DEV'
-          port: 8001
+          clean: false
+      - uses: ./.github/actions/test
+        with:
+          environment: dev
   deploy-stg:
     runs-on: self-hosted
     needs: [test-dev]
     name: Deploy to STG
     steps:
       - uses: actions/checkout@v3.5.2
-      - id: deployToStg
-        uses: ./.github/actions/deploy
         with:
-          environment: 'STG'
+          clean: false
+      - uses: ./.github/actions/deploy
+        with:
+          environment: staging
           port: 8002
   test-stg:
     runs-on: self-hosted
     needs: [deploy-stg]
     steps:
       - uses: actions/checkout@v3.5.2
-      - id: testOnStg
-        uses: ./.github/actions/deploy
         with:
-          environment: 'STG'
-          port: 8002
-  deploy-prd:
+          clean: false
+      - uses: ./.github/actions/test
+        with:
+          environment: staging
+  deploy-pre-prd:
     runs-on: self-hosted
     needs: [test-stg]
     name: Deploy to 'STG'
     steps:
       - uses: actions/checkout@v3.5.2
-      - id: deployToStg
-        uses: ./.github/actions/deploy
         with:
-          environment: 'PRD'
+          clean: false
+      - uses: ./.github/actions/deploy
+        with:
+          environment: preprod
           port: 8003
+  test-pre-prd:
+    runs-on: self-hosted
+    needs: [deploy-pre-prd]
+    steps:
+      - uses: actions/checkout@v3.5.2
+        with:
+          clean: false
+      - uses: ./.github/actions/test
+        with:
+          environment: preprod
+
+  deploy-prd:
+    runs-on: self-hosted
+    needs: [test-pre-prd]
+    name: Deploy to 'STG'
+    steps:
+      - uses: actions/checkout@v3.5.2
+        with:
+          clean: false
+      - uses: ./.github/actions/deploy
+        with:
+          environment: preprod
+          port: 8004
   test-prd:
     runs-on: self-hosted
     needs: [deploy-prd]
     steps:
       - uses: actions/checkout@v3.5.2
-      - id: testOnPrd
-        uses: ./.github/actions/deploy
         with:
-          environment: 'PRD'
-          port: 8003
+          clean: false
+      - uses: ./.github/actions/test
+        with:
+          environment: preprod

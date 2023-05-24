@@ -22,5 +22,5 @@ runs:
       working-directory: python-greetings
       run: |
         pip3 install -r requirements.txt
-        Write-Host "Installed dependencies for ${{ inputs.environment }} environment."
+        Write-Host "Installed dependencies from requirements file"
       shell: powershell
